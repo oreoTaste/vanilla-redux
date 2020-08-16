@@ -24,7 +24,8 @@ const deleteTodo = (id) => {
 const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TODO:
-      return [{ text: action.text, id: Date.now() }, ...state];
+      const newState = { text: action.text, id: Date.now() };
+      return [newState, ...state];
     case DELETE_TODO:
       return state.filter((word) => word.id !== action.id);
     default:
@@ -46,6 +47,9 @@ const dispatchDeleteTodo = (e) => {
 };
 
 const paintTodo = () => {
+  // without using React (only using Vanilla JS)
+  // all the childNode of ul should be replace
+  // due to lack of using Virtual DOM
   ul.innerHTML = "";
   const toDos = store.getState();
   toDos.forEach((todo) => {
