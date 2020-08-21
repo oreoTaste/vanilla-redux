@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Home() {
+function Home() {
   const [text, setText] = useState("");
 
   function onSubmit(e) {
@@ -23,3 +23,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home;
