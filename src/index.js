@@ -1,37 +1,59 @@
 import { createStore } from "redux";
 
-const plus = document.querySelector("#plus");
-const result = document.querySelector("#result");
-const minus = document.querySelector("#minus");
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const ul = document.querySelector("ul");
 
-const PLUS = "PLUS";
-const MINUS = "MINUS";
+const ADD_TODO = "ADD_TODO";
+const DELETE_TODO = "DELETE_TODO";
 
-const plusObject = {type: PLUS}
-const minusObject = {type: MINUS}
-
-const reducer = (state = 0, action) => {
-    switch(action.type) {
-        case PLUS:
-            return parseInt(state) + 1;
-        case MINUS:
-            return parseInt(state) - 1;
+const reducer = (state = [], action) => {
+    switch (action.type) {
+        case ADD_TODO:
+            return [
+                ...state,
+                {
+                    text: action.text,
+                    id: Date.now()
+                }
+            ]
+        case DELETE_TODO:
+            return state.filter(el => el.id !== parseInt(action.id));
         default:
-            return parseInt(state);
+            return state;
     }
 }
-
 const store = createStore(reducer);
 
-store.subscribe(() => {
-    result.innerText = store.getState();
-});
+const addObject = (toDo) => {return {type: ADD_TODO, text: toDo};}
+const deleteObject = (id) => {return {type: DELETE_TODO, id};}
 
-plus.addEventListener("click", () => {
-    store.dispatch(plusObject);
-})
+const onSubmit = (e) => {
+    e.preventDefault();
+    const toDo = input.value;
+    input.value = "";
+    store.dispatch(addObject(toDo))
+}
 
-minus.addEventListener("click", () => {
-    store.dispatch(minusObject);
-})
+form.addEventListener("submit", onSubmit)
 
+const deleteBtn = (e) => {
+    const li = e.target.parentNode;
+    store.dispatch(deleteObject(li.id));
+}
+
+const paintToDos = () => {
+    ul.innerHTML = "";
+    store.getState().forEach((toDo) => {
+        const li = document.createElement("li");
+        li.innerText = toDo.text;
+        li.id = toDo.id;
+        const btn = document.createElement("button");
+        btn.innerHTML = "X";
+        btn.addEventListener("click", deleteBtn);
+        li.appendChild(btn);
+        ul.appendChild(li);
+    });
+}
+
+store.subscribe(paintToDos);
