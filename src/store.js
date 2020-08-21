@@ -8,6 +8,7 @@ const addToDo = (text) => {
 }
 
 const deleteToDo = (id) => {
+    console.log("deleted")
     return {type: DELETE, id: parseInt(id)};
 }
 
