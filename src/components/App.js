@@ -1,9 +1,16 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { HashRouter as Router, Route } from "react-router-dom";
+import Home from "../routes/Home";
+import Detail from "../routes/Detail";
 
 class App extends React.Component {
     render() {
-    return "App";
+        return(
+            <Router>
+                <Route path="/" exact component={Home}></Route>
+                <Route path="/:id" component={Detail}></Route>
+            </Router>
+        )
     }
 }
 
