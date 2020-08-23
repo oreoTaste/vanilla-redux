@@ -1,42 +1,34 @@
 import { createStore } from "redux";
 
-const addToDo = (text) => {
-    return {
-        type: ADD,
-        text,
-        id: Date.now(),
-    }
-}
-
-const deleteToDo = (id) => {
-    return {
-        type: DELETE,
-        id: Date.now(),
-    }
-}
-
-const ADD = "ADD";
-const DELETE = "DELETE";
-
-const reducer = (state = [], action)=> {
+const reducer = (state=[], action) => {
     switch(action.type) {
-        case ADD:
-            return [{text: action.text, id: action.id}, ...state];
-        case DELETE:
-            return state.filter(toDos => toDos.id !== action.id);
+        case "ADD":
+            return [{text: action.text, id: action.id = Date.now()} , ...state];
+        case "DELETE":
+            return state.filter(toDo => toDo.id !== parseInt(action.id));
         default:
             return state;
     }
 }
 
-const store = createStore(reducer);
+const addToDo = (text) => {
+    return {
+        type: "ADD",
+        text,
+    }
+}
 
-// store.dispatch(addToDo);
-// store.subscribe(() => {
-// });
+const deleteToDo = (id) => {
+    return {
+        type: "DELETE",
+        id,
+    }
+}
 
 export const actionCreators = {
-    addToDo,
-    deleteToDo,
+    addToDo, deleteToDo
 }
+
+const store = createStore(reducer);
+
 export default store;

@@ -1,48 +1,42 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
-import { actionCreators } from "../store";
+import {actionCreators} from "../store";
+import ToDo from "../components/ToDo";
 
 function Home({toDos, addToDo}) {
     const [text, setText] = useState("");
 
-    function onChange(e) {
+    const onChange = e => {
         e.preventDefault();
         setText(e.target.value);
     }
 
-    function onSubmit(e) {
+    const onSubmit = (e) => {
         e.preventDefault();
-        setText("");
         addToDo(text);
+        setText("");
     }
 
     return (
         <>
             <h1>To Dos</h1>
             <form onSubmit={onSubmit}>
-                <input value={text} type="text" onChange={onChange}/>
-                <button>ADD</button>
+                <input type="text" value={text} onChange={onChange}/>
+                <button>+</button>
             </form>
             <ul>
-                {
-                toDos.map(toDo => (
-                    <li key={toDo.id} id={toDo.id}>{toDo.text}
-                    </li>
-                ))
-                }
+                <ToDo toDos={toDos}/>
             </ul>
         </>
     );
 }
 
 function mapStateToProps(state, ownProps) {
-    return { toDos : state };
+    return { toDos: state };
 }
-
 function mapDispatchToProps(dispatch, ownProps) {
     return {
-        addToDo : (text) => dispatch(actionCreators.addToDo(text))
+        addToDo: (text) => dispatch(actionCreators.addToDo(text)),
     };
 }
 
